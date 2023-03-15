@@ -1,17 +1,29 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, StyleSheet, ScrollView, TextInput} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  TextInput,
+  Button,
+} from 'react-native';
 import axios from 'axios';
 
 const UseEffectFetchData = () => {
-  const [id, setId] = useState(1);
   const [post, setPost] = useState({});
+  const [id, setId] = useState(1);
+  const [idFromBtn, setIdFromBtn] = useState(1);
 
   useEffect(() => {
     axios
-      .get(`https://jsonplaceholder.typicode.com/posts/${id}`)
+      .get(`https://jsonplaceholder.typicode.com/posts/${idFromBtn}`)
       .then(res => setPost(res.data))
       .catch(err => console.log(err));
-  }, [id]);
+  }, [idFromBtn]);
+
+  const handlePress = () => {
+    setIdFromBtn(id);
+  };
 
   return (
     <ScrollView style={styles.rootContainer}>
@@ -20,6 +32,7 @@ const UseEffectFetchData = () => {
         onChangeText={text => setId(text)}
         style={styles.textInputStyle}
       />
+      <Button title="Fetch Post" onPress={handlePress} />
       <Text style={styles.heading}>
         {post.id}. {post.title}
       </Text>
